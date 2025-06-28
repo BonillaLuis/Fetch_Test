@@ -23,5 +23,11 @@ interface FetchApiService {
 fun processItems(rawItems: List<FetchList>): List<FetchList> {
     return rawItems
         .filter { !it.name.isNullOrBlank() }
-        .sortedWith(compareBy({ it.listId }, { it.name }))
+        .sortedWith(compareBy(
+            { it.listId },
+            { extractNumber(it.name) }
+        ))
+}
+fun extractNumber(name: String?): Int {
+    return name?.substringAfter("Item ")?.toIntOrNull() ?: Int.MAX_VALUE
 }
